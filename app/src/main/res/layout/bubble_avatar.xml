@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bubble_avatar"
+    android:orientation="vertical">
+
+    <data class=".databinding.BubbleAvatarBinding">
+        <variable
+            name="animation"
+            type="com.example.animationtest.Animation" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.codyzen.spriterunner.SpriteView
+            android:layout_width="60dp"
+            android:layout_height="100dp"
+            android:id="@+id/bubbleavatar_image"
+            app:columns="@{animation.cols}"
+            app:fps="@{animation.fps}"
+            app:lastFrame="@{animation.cols}"
+            app:src="@{animation.image}"
+            app:rows="1"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

@@ -2,28 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <data>
-        <variable
-            name="animation"
-            type="com.example.animationtest.Animation" />
-    </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
-
-        <com.codyzen.spriterunner.SpriteView
-            android:layout_width="114dp"
-            android:layout_height="142dp"
-            app:columns="@{animation.cols}"
-            app:fps="@{animation.fps}"
-            app:lastFrame="@{animation.cols}"
-            app:rows="1"
-            app:src="@{animation.image}"
-            tools:layout_editor_absoluteX="148dp"
-            tools:layout_editor_absoluteY="294dp" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
