@@ -98,7 +98,7 @@ public class BubbleAvatarService extends Service {
                                 Button button = new Button(BubbleAvatarService.this);
                                 button.setText("Close");
 
-                                ConstraintLayout layout = bubbleavatarView.findViewById(R.id.bubble_avatar);
+                                RelativeLayout layout = bubbleavatarView.findViewById(R.id.bubble_avatar);
                                 layout.addView(button);
 
                                 button.setOnClickListener(new View.OnClickListener() {
