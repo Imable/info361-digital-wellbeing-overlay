@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="65dp"
-    android:layout_height="wrap_content"
-    android:id="@+id/bubble_avatar"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bubble_avatar">
 
-    <ImageView
-        android:id="@+id/bubbleavatar_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@mipmap/ic_launcher_round"
-        tools:ignore="ContentDescription"/>
-</RelativeLayout>
+    <data class=".databinding.BubbleAvatarBinding">
+        <variable
+            name="animation"
+            type="com.example.animationtest.Animation" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.codyzen.spriterunner.SpriteView
+            android:id="@+id/bubbleavatar_image"
+            android:layout_width="90dp"
+            android:layout_height="100dp"
+            app:columns="@{animation.cols}"
+            app:fps="@{animation.fps}"
+            app:lastFrame="@{animation.cols}"
+            app:rows="1"
+            app:src="@drawable/avatar_idle_4"
+            tools:ignore="ContentDescription" />
+        <!-- app:src="@drawable/avatar_climb_4" -->
+        <!-- app:src="@drawable/avatar_idle_4" -->
+        <!-- app:src="@{animation.image}" this does not work -->
+    </RelativeLayout>
+</layout>
