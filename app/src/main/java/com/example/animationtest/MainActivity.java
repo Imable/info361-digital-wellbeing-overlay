@@ -25,25 +25,23 @@ import com.codyzen.spriterunner.SpriteView;
 import com.example.animationtest.databinding.BubbleAvatarBinding;
 
 public class MainActivity extends AppCompatActivity {
-    private Animation animation;
     public final static int PERMISSION_REQUEST_CODE = 1;
 
     private Button summonAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
 
         summonAvatar = (Button) findViewById(R.id.summon_avatar);
         summonAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (isLayoutPermissionAllowed(MainActivity.this)) {
+
                     Intent intent = new Intent(MainActivity.this, BubbleAvatarService.class);
                     startService(intent);
 
@@ -52,24 +50,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-//        final BubbleAvatarBinding binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.bubble_avatar, null, false);
-
-//
-//
-//        animation = new Animation(this, "avatar_climb_4", 4,8);
-//
-//        binding.setAnimation(animation);
-
-//         Temporary cod for changing animation
-//        new android.os.Handler().postDelayed(
-//            new Runnable() {
-//                public void run() {
-//                    animation.updateAnimation("avatar_idle_4");
-//                    binding.setAnimation(animation);
-//                }
-//            },
-//            2000);
     }
 
 

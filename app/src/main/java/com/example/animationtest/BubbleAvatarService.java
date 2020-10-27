@@ -1,4 +1,4 @@
-package com.example.bubbleavatar;
+package com.example.animationtest;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,14 +8,14 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import com.codyzen.spriterunner.SpriteView;
+
 
 public class BubbleAvatarService extends Service {
-
     private WindowManager windowManager;
     private View bubbleavatarView;
 
@@ -27,15 +27,18 @@ public class BubbleAvatarService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
         //Inflate the bubble
         bubbleavatarView = LayoutInflater.from(this).inflate(R.layout.bubble_avatar, null);
+
+        final SpriteView avatar1 = (SpriteView) bubbleavatarView.findViewById(R.id.bubbleavatar_image1);
+        final SpriteView avatar2 = (SpriteView) bubbleavatarView.findViewById(R.id.bubbleavatar_image2);
+        final LinearLayout text_bubble = (LinearLayout) bubbleavatarView.findViewById(R.id.text_bubble);
 
         //Add the view to the window
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_PHONE,
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
@@ -48,8 +51,52 @@ public class BubbleAvatarService extends Service {
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         windowManager.addView(bubbleavatarView, params);
 
+        //Create a sleep thread
+        runnableThread(avatar1, avatar2, text_bubble, params, 5000);
+
         //Make the bubble movable by touch
-        ImageView bubbleavatarImage = bubbleavatarView.findViewById(R.id.bubbleavatar_image);
+        SpriteView bubbleavatarImage = avatar1;
+
+        setButtonOnAvatar(bubbleavatarImage, params);
+
+        text_bubble.setOnTouchListener(
+                new View.OnTouchListener() {
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            text_bubble.setVisibility(View.GONE);
+                            avatar2.setVisibility(View.GONE);
+                            avatar1.setVisibility(View.VISIBLE);
+
+                            runnableThread(avatar1, avatar2, text_bubble, params, 3000);
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+        );
+    }
+
+    public void runnableThread(final SpriteView avatar1, final SpriteView avatar2, final LinearLayout text_bubble, final WindowManager.LayoutParams params, int sec) {
+
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        avatar2.setVisibility(View.VISIBLE);
+                        avatar1.setVisibility(View.GONE);
+
+                        text_bubble.setVisibility(View.VISIBLE);
+
+                        SpriteView bubbleavatarImage = avatar2;
+                        setButtonOnAvatar(bubbleavatarImage, params);
+
+                    }
+                },
+                sec);
+    }
+
+    public void setButtonOnAvatar(SpriteView bubbleavatarImage, final WindowManager.LayoutParams params) {
         bubbleavatarImage.setOnTouchListener(
                 new View.OnTouchListener() {
                     private int initialX;
@@ -86,10 +133,10 @@ public class BubbleAvatarService extends Service {
                                 layout.addView(button);
 
                                 button.setOnClickListener(new View.OnClickListener() {
-                                   @Override
-                                   public void onClick(View view) {
-                                       stopSelf(); //Close the service (remove bubble)
-                                   }
+                                    @Override
+                                    public void onClick(View view) {
+                                        stopSelf(); //Close the service (remove bubble)
+                                    }
                                 });
                             }
                         }
