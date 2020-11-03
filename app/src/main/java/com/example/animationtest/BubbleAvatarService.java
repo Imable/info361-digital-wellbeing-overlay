@@ -2,8 +2,12 @@ package com.example.animationtest;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.os.IBinder;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,6 +30,7 @@ public class BubbleAvatarService extends Service {
 
     @Override
     public void onCreate() {
+
         super.onCreate();
         //Inflate the bubble
         bubbleavatarView = LayoutInflater.from(this).inflate(R.layout.bubble_avatar, null);
@@ -42,14 +47,16 @@ public class BubbleAvatarService extends Service {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
-        //Specify the bubble position
-        params.gravity = Gravity.TOP | Gravity.LEFT; //Initially view will be added to top-left corner
-        params.x = 0;
-        params.y = 100;
-
         //Add the view to the window
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         windowManager.addView(bubbleavatarView, params);
+
+        DisplayMetrics dm = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(dm);
+        //Specify the bubble position
+        params.gravity = Gravity.TOP | Gravity.LEFT; //Initially view will be added to top-left corner
+        params.x = dm.widthPixels;
+        params.y = 100;
 
         //Create a sleep thread
         runnableThread(avatar1, avatar2, text_bubble, params, 5000);
@@ -69,7 +76,7 @@ public class BubbleAvatarService extends Service {
                             avatar2.setVisibility(View.GONE);
                             avatar1.setVisibility(View.VISIBLE);
 
-                            runnableThread(avatar1, avatar2, text_bubble, params, 3000);
+                            runnableThread(avatar1, avatar2, text_bubble, params, 2000);
                             return true;
                         }
                         return false;
@@ -121,13 +128,14 @@ public class BubbleAvatarService extends Service {
 
                             return true;
                         }
-
+                        Button button = new Button(BubbleAvatarService.this);
+                        button.setText("Close");
                         //When tapping on the bubble, a close button should appear
                         if (event.getAction() == MotionEvent.ACTION_UP) {
                             //Tapping the button should close the bubble
+
                             if (lastAction == MotionEvent.ACTION_DOWN) {
-                                Button button = new Button(BubbleAvatarService.this);
-                                button.setText("Close");
+
 
                                 RelativeLayout layout = bubbleavatarView.findViewById(R.id.bubble_avatar);
                                 layout.addView(button);
@@ -140,7 +148,7 @@ public class BubbleAvatarService extends Service {
                                 });
                             }
                         }
-
+                        
                         if (event.getAction() == MotionEvent.ACTION_MOVE) {
                             //Calculate X and Y coordinates of the view
                             params.x = initialX + (int) (event.getRawX() - touchX);
